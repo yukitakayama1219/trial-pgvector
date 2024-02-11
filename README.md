@@ -1,7 +1,5 @@
 # 概要
-Poetryをつかったpythonのサンプルプロジェクト  
-ツールの詳細はnotionの「[DS 開発環境やコーディング規約などを](https://www.notion.so/nishika0507/DS-99fdcad6f2b14713986dd8f8c803a730?pvs=4)」を参照
-
+PostgreSQLをUbuntu22.04(WSL2)上に構築し、そこに接続してRAGでナレッジ回答するStreamlitアプリのリポジトリ
 
 # 使い方
 ## 環境構築
@@ -10,7 +8,8 @@ Poetryをつかったpythonのサンプルプロジェクト
 make install
 ```
 
-- PostgreSQL on WSLのセットアップ
+- PostgreSQL on Ubuntu(WSL2)のセットアップ
+WSL2でUbuntuを構築する方法は割愛
 ```
 # PostgresSQL15以降でpg_vectorが使用可能
 # WSLのデフォルトのリポジトリが古いので、最新情報を取得します。
