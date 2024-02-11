@@ -97,11 +97,19 @@ streamlitのアプリを実行する
 $ poetry shell
 $ streamlit run src/app.py
 
-# アプリ起動によって
-# embeddingが作成され、CSVの行数分追加される
-# select * from langchain_pg_embedding
-# collection_nameに指定されたembeddingのcollectionも作成される
-# select * from langchain_pg_collection
+# アプリ起動によってembeddingが作成され、CSVの行数分追加される
+# DB上で追加されたレコードを見る
+$ psql -u postgres -h localhost -d db01
+Password for user postgres: 
+psql (15.6 (Ubuntu 15.6-1.pgdg22.04+1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
+Type "help" for help.
+
+db01=# \d langchain_pg_embedding
+db01=# select collection_id, document, cmetadata, custom_id, uuid from langchain_pg_embedding;
+# collection_nameに指定されたembeddingのcollectionも1つ作成される
+db01=# \d langchain_pg_collection
+db01=# select name, cmetadata, uuid from langchain_pg_collection
 ``` 
 
 # 参考にしたテンプレート
