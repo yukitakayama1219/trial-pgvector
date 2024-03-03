@@ -28,6 +28,11 @@ class RagChain:
         self.vector_store = self.initialize_vector_store()
 
     def create_connection_string(self) -> str:
+        """
+        DB接続文字列の作成
+        Returns:
+            str: DB接続文字列
+        """        
         driver = os.environ.get("DB_DRIVER", self.DB_DRIVER_DEFAULT)
         host = os.environ.get("DB_HOST", self.DB_HOST_DEFAULT)
         port = int(os.environ.get("DB_PORT", self.DB_PORT_DEFAULT))
@@ -37,17 +42,30 @@ class RagChain:
         return f"postgresql+{driver}://{user}:{password}@{host}:{port}/{database}"
 
     def initialize_vector_store(self):
+        """
+        ベクトルストアの初期化
+        Returns:
+            PGVector: ベクトルストア
+        """
         embedding = OpenAIEmbeddings(model="text-embedding-3-small")
         documents = [Document(page_content=text) for text in self.df["text"].to_list()]
+        # PostgreSQLのにベクトルストアを作成
         return PGVector.from_documents(
             collection_name=self.COLLECTION_NAME,
             connection_string=self.con_str,
             embedding=embedding,
             documents=documents,
-            pre_delete_collection=True,
+            pre_delete_collection=True, # 既存のコレクションを削除し、毎回作り直す
         )
 
     def answer(self, query: str) -> Dict:
+        """
+        質問に対する回答を返す
+        Args:
+            query (str): 質問
+        Returns:
+            Dict: 回答
+        """
         output_parser = StrOutputParser()
         model = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0)
         prompt = ChatPromptTemplate.from_template(
