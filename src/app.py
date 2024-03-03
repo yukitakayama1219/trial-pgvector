@@ -4,6 +4,7 @@ import streamlit as st
 
 from chain import RagChain
 
+
 @dataclass
 class Component:
     query: str = st.session_state.get("query", "")

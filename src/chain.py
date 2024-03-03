@@ -1,21 +1,21 @@
 import os
+from typing import Dict
+
+import pandas as pd
+from dotenv import load_dotenv
+from langchain.chat_models import ChatOpenAI
 from langchain.docstore.document import Document
+from langchain.prompts import ChatPromptTemplate
+from langchain.schema.output_parser import StrOutputParser
+from langchain.schema.runnable import RunnableParallel, RunnablePassthrough
 from langchain.vectorstores.pgvector import PGVector
 from langchain_community.embeddings import OpenAIEmbeddings
 
-from dotenv import load_dotenv
-from typing import Dict
-import pandas as pd
-from langchain.schema.runnable import RunnablePassthrough, RunnableParallel
-
-from langchain.schema.output_parser import StrOutputParser
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-
 load_dotenv()
 
+
 class RagChain:
-    COLLECTION_NAME = "test3"
+    COLLECTION_NAME = "test_collection"
     DB_DRIVER_DEFAULT = "psycopg2"
     DB_HOST_DEFAULT = "localhost"
     DB_PORT_DEFAULT = 5432
@@ -32,7 +32,7 @@ class RagChain:
         DB接続文字列の作成
         Returns:
             str: DB接続文字列
-        """        
+        """
         driver = os.environ.get("DB_DRIVER", self.DB_DRIVER_DEFAULT)
         host = os.environ.get("DB_HOST", self.DB_HOST_DEFAULT)
         port = int(os.environ.get("DB_PORT", self.DB_PORT_DEFAULT))
@@ -55,7 +55,7 @@ class RagChain:
             connection_string=self.con_str,
             embedding=embedding,
             documents=documents,
-            pre_delete_collection=True, # 既存のコレクションを削除し、毎回作り直す
+            pre_delete_collection=True,  # 既存のコレクションを削除し、毎回作り直す
         )
 
     def answer(self, query: str) -> Dict:
@@ -78,12 +78,7 @@ class RagChain:
             """
         )
 
-        rag_chain_from_docs = (
-            RunnablePassthrough()
-            | prompt
-            | model
-            | output_parser
-        )
+        rag_chain_from_docs = RunnablePassthrough() | prompt | model | output_parser
 
         rag_chain_with_source = RunnableParallel(
             {"context": self.vector_store.as_retriever(search_kwargs={"k": 3}), "question": RunnablePassthrough()}
