@@ -110,7 +110,3 @@ db01=# select collection_id, document, cmetadata, custom_id, uuid from langchain
 db01=# \d langchain_pg_collection
 db01=# select name, cmetadata, uuid from langchain_pg_collection
 ``` 
-
-# 参考にしたテンプレート
-* https://github.com/cvpaperchallenge/Ascender
-* https://github.com/takashi-yoneya/python-template
