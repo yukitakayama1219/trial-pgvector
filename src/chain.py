@@ -49,7 +49,7 @@ class RagChain:
         """
         embedding = OpenAIEmbeddings(model="text-embedding-3-small")
         documents = [Document(page_content=text) for text in self.df["text"].to_list()]
-        # PostgreSQLのにベクトルストアを作成
+        # PostgreSQLにベクトルストアを作成
         return PGVector.from_documents(
             collection_name=self.COLLECTION_NAME,
             connection_string=self.con_str,
