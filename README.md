@@ -11,11 +11,11 @@ make install
 - PostgreSQL on Ubuntu(WSL2)のセットアップ
 WSL2でUbuntuを構築する方法は割愛
 ```
-# WSLのデフォルトのリポジトリが古いので、最新情報を取得します。
+# Postgresのリポジトリを追加し鍵を取得
 $ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc |  sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null
 
-# aptで用意されているpg_vectorをインストール
+# aptで用意されているPostgresおよびpg_vectorをインストール
 # https://github.com/pgvector/pgvector?tab=readme-ov-file#installation-notes
 $ sudo apt install postgresql-15 postgresql-15-pgvector
 
