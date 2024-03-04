@@ -81,6 +81,6 @@ class RagChain:
         rag_chain_from_docs = RunnablePassthrough() | prompt | model | output_parser
 
         rag_chain_with_source = RunnableParallel(
-            {"context": self.vector_store.as_retriever(search_kwargs={"k": 3}), "question": RunnablePassthrough()}
+            {"context": self.vector_store.as_retriever(search_kwargs={"k": 2}), "question": RunnablePassthrough()}
         ).assign(answer=rag_chain_from_docs)
         return rag_chain_with_source.invoke(query)
